@@ -39,12 +39,36 @@ if len(data_files) == 0:
             
             # Extract files
             with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                zip_ref.extractall(data_path)
+                # Check if files are in a subdirectory
+                file_list = zip_ref.namelist()
+                
+                # If all files are in a subdirectory, extract to parent
+                if all('/' in f for f in file_list if not f.endswith('/')):
+                    # Files are in subdirectory, extract to temp and move
+                    temp_extract = Path("temp_extract")
+                    zip_ref.extractall(temp_extract)
+                    
+                    # Find JSON files and move them
+                    for json_file in temp_extract.rglob("*.json"):
+                        target = data_path / json_file.name
+                        shutil.move(str(json_file), str(target))
+                    
+                    # Clean up temp directory
+                    shutil.rmtree(temp_extract)
+                else:
+                    # Files are at root level, extract directly
+                    zip_ref.extractall(data_path)
             
             # Clean up
             zip_path.unlink()
             
-            st.success("✅ Data uploaded successfully! Reloading app...")
+            # Verify extraction
+            extracted_files = list(data_path.glob("*.json"))
+            st.success(f"✅ Data uploaded successfully! Extracted {len(extracted_files)} episode files.")
+            
+            if extracted_files:
+                st.info(f"Sample files: {', '.join([f.name for f in extracted_files[:3]])}")
+            
             st.balloons()
             st.rerun()
     
@@ -59,4 +83,12 @@ if len(data_files) == 0:
     
 else:
     # Run the main app
-    exec(open('app_complete.py').read())
+    st.success(f"✅ Found {len(data_files)} episode data files!")
+    
+    # Import and run the main app properly
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    
+    # Import after data is ready
+    from app_complete import main
+    main()

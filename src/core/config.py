@@ -54,7 +54,15 @@ class Config:
     def __init__(self, config_path: Optional[str] = None):
         """Initialize configuration from YAML file"""
         if config_path is None:
-            config_path = Path(__file__).parent.parent.parent / "config" / "settings.yaml"
+            # Check for deployment config first
+            deployment_config = Path(__file__).parent.parent.parent / "config" / "settings_deployment.yaml"
+            default_config = Path(__file__).parent.parent.parent / "config" / "settings.yaml"
+            
+            if deployment_config.exists():
+                config_path = deployment_config
+                logger.info("Using deployment configuration")
+            else:
+                config_path = default_config
         
         self.config_path = Path(config_path)
         self._raw_config = self._load_config()

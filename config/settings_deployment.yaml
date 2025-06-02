@@ -1,0 +1,89 @@
+# Project Simone Configuration - Deployment Version
+
+# API Configuration
+api:
+  openai:
+    api_key: ""
+    models:
+      analysis: "gpt-4o-mini"
+      qa: "gpt-4o"
+      embedding: "text-embedding-3-small"
+  anthropic:
+    api_key: ""  # Optional
+    models:
+      analysis: "claude-3-sonnet-20240229"
+
+# Data Paths - Fixed for deployment
+paths:
+  raw_transcripts: "data/raw"
+  existing_analysis: "data/processed"  # Changed from Windows path
+  cache_dir: "data/cache"
+  processed_dir: "data/processed"
+  exports_dir: "data/exports"
+
+# Analysis Settings
+analysis:
+  chunk_size: 4000  # tokens
+  overlap: 200  # tokens
+  max_retries: 3
+  batch_size: 5
+  cache_enabled: true
+  
+  # Analysis depth levels
+  depth_levels:
+    quick: 
+      passes: 1
+      focus: ["topics", "key_concepts"]
+    standard:
+      passes: 2
+      focus: ["topics", "concepts", "arguments", "wisdom"]
+    deep:
+      passes: 3
+      focus: ["topics", "concepts", "arguments", "wisdom", "contradictions", "connections", "meta_analysis"]
+
+# Philosophical Analysis
+philosophy:
+  traditions:
+    - "Western Classical"
+    - "Eastern Philosophy"
+    - "Continental"
+    - "Analytic"
+    - "Existentialism"
+    - "Stoicism"
+    - "Buddhism"
+    - "Pragmatism"
+  
+  concept_categories:
+    - "Ethics & Morality"
+    - "Metaphysics"
+    - "Epistemology"
+    - "Political Philosophy"
+    - "Philosophy of Mind"
+    - "Aesthetics"
+    - "Logic"
+    - "Philosophy of Language"
+
+# Interface Settings
+interface:
+  host: "localhost"
+  port: 8501
+  theme: "dark"
+  max_chat_history: 50
+  
+  features:
+    socratic_dialogue: true
+    concept_network: true
+    learning_paths: true
+    export_insights: true
+
+# Processing
+processing:
+  parallel_workers: 4
+  memory_limit: "4GB"
+  checkpoint_interval: 10  # Save progress every N episodes
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/simone.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

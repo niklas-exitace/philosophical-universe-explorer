@@ -18,21 +18,24 @@ load_dotenv()
 # Add project to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-# Configure page
-st.set_page_config(
-    page_title="Philosophical Universe - Project Simone",
-    page_icon="🌌",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# Only configure page if running directly (not imported)
+if __name__ == "__main__":
+    st.set_page_config(
+        page_title="Philosophical Universe - Project Simone",
+        page_icon="🌌",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
 
 # Import components after path setup
 from src.core import SimoneEngine
 from src.interface.visualizations import ConceptNetworkVisualizer, TimelineVisualizer
 from src.interface.chat_interface_enhanced import EnhancedPhilosophicalChat
 
-# Enhanced CSS with animations
-st.markdown("""
+def init_styles_and_state():
+    """Initialize styles and session state"""
+    # Enhanced CSS with animations
+    st.markdown("""
 <style>
     /* Import Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -216,32 +219,35 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
-if 'page' not in st.session_state:
-    st.session_state.page = 'home'
-if 'engine' not in st.session_state:
-    with st.spinner("🌌 Initializing the Philosophical Universe..."):
-        st.session_state.engine = SimoneEngine()
-if 'chat_interface' not in st.session_state:
-    st.session_state.chat_interface = EnhancedPhilosophicalChat(
-        st.session_state.engine.data_manager,
-        st.session_state.engine.config
-    )
-if 'concept_viz' not in st.session_state:
-    st.session_state.concept_viz = ConceptNetworkVisualizer(
-        st.session_state.engine.concept_mapper
-    )
-if 'timeline_viz' not in st.session_state:
-    st.session_state.timeline_viz = TimelineVisualizer(
-        st.session_state.engine.data_manager
-    )
-if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
-if 'selected_concepts' not in st.session_state:
-    st.session_state.selected_concepts = []
+    # Initialize session state
+    if 'page' not in st.session_state:
+        st.session_state.page = 'home'
+    if 'engine' not in st.session_state:
+        with st.spinner("🌌 Initializing the Philosophical Universe..."):
+            st.session_state.engine = SimoneEngine()
+    if 'chat_interface' not in st.session_state:
+        st.session_state.chat_interface = EnhancedPhilosophicalChat(
+            st.session_state.engine.data_manager,
+            st.session_state.engine.config
+        )
+    if 'concept_viz' not in st.session_state:
+        st.session_state.concept_viz = ConceptNetworkVisualizer(
+            st.session_state.engine.concept_mapper
+        )
+    if 'timeline_viz' not in st.session_state:
+        st.session_state.timeline_viz = TimelineVisualizer(
+            st.session_state.engine.data_manager
+        )
+    if 'chat_history' not in st.session_state:
+        st.session_state.chat_history = []
+    if 'selected_concepts' not in st.session_state:
+        st.session_state.selected_concepts = []
 
 def main():
     """Main app logic"""
+    
+    # Initialize styles and state
+    init_styles_and_state()
     
     # Sidebar navigation
     with st.sidebar:

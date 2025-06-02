@@ -7,6 +7,15 @@ import os
 import zipfile
 import shutil
 from pathlib import Path
+import sys
+
+# MUST be the first Streamlit command
+st.set_page_config(
+    page_title="Philosophical Universe - Project Simone",
+    page_icon="🌌",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Check if data exists
 data_path = Path("data/processed")

@@ -46,7 +46,7 @@ if len(data_files) == 0:
             
             st.success("✅ Data uploaded successfully! Reloading app...")
             st.balloons()
-            st.experimental_rerun()
+            st.rerun()
     
     st.markdown("---")
     st.info("""

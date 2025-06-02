@@ -1,0 +1,23 @@
+{
+  "name": "Philosophical Universe Explorer",
+  "description": "AI-powered exploration of philosophical content from Mondlandung podcast",
+  "repository": "https://github.com/YOUR_USERNAME/philosophical-universe-explorer",
+  "logo": "https://raw.githubusercontent.com/YOUR_USERNAME/philosophical-universe-explorer/main/docs/logo.png",
+  "keywords": ["python", "streamlit", "philosophy", "ai", "claude", "visualization"],
+  "stack": "heroku-22",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "OPENAI_API_KEY": {
+      "description": "Your OpenAI API key for chat functionality",
+      "required": false
+    },
+    "ANTHROPIC_API_KEY": {
+      "description": "Your Anthropic API key for Claude Opus 4 chat",
+      "required": false
+    }
+  }
+}
